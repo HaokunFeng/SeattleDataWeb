@@ -89,7 +89,7 @@ def get_detail_page():
             row['location'] = metas[1]
 
             # Retrieve latitude, longitude
-            latitude, longitude = get_lat_long(row['location'])
+            latitude, longitude = get_lat_long(f"{row['venue']}, Seattle")
             row['latitude'] = latitude
             row['longitude'] = longitude
 
