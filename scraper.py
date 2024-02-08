@@ -33,7 +33,22 @@ def get_weather_data(latitude, longitude):
     print("Complete API response:", json.dumps(data, indent=2))
 
     properties = data.get('properties', {})
-    periods = properties.get('periods', [])
+    forecast_url = properties.get('forecast')
+
+    if not forecast_url:
+        return {
+            'condition': None,
+            'temperature': None,
+            'temperature_trend': None,
+            'humidity': None,
+            'windspeed': None,
+            'winddirection': None,
+        }
+
+    forecast_response = requests.get(forecast_url)
+    forecast_data = forecast_response.json()
+
+    periods = forecast_data.get('properties', {}).get('periods', [])
 
     if not periods:
         return {
