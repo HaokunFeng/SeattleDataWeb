@@ -29,14 +29,33 @@ def get_weather_data(latitude, longitude):
     url = NWS_URL_TEMPLATE.format(latitude=latitude, longitude=longitude)
     response = requests.get(url)
     data = response.json()
+
     properties = data.get('properties', {})
-    temperature = properties.get('temperature', {})
+    periods = properties.get('periods', [])
+
+    if not periods:
+        return {
+            'condition': None,
+            'temperature': None,
+            'temperature_trend': None,
+            'humidity': None,
+            'windspeed': None,
+            'winddirection': None,
+        }
+
+    # Extracting the relevant data from the first period (assumption: you want the current or next forecast)
+    first_period = periods[0]
+
     return {
-        'condition': properties.get('shortForecast'),
-        'temperature_min': temperature.get('min'),
-        'temperature_max': temperature.get('max'),
-        'windchill': temperature.get('windChill'),
+        'condition': first_period.get('shortForecast'),
+        'temperature': first_period.get('temperature'),
+        'temperature_trend': first_period.get('temperatureTrend'),
+        'humidity': first_period.get('relativeHumidity', {}).get('value'),
+        'windspeed': first_period.get('windSpeed'),
+        'winddirection': first_period.get('windDirection'),
     }
+
+
 
 
 def list_links():
@@ -95,9 +114,11 @@ def insert_to_pg():
         latitude FLOAT,
         longitude FLOAT,
         weather_condition TEXT,
-        temperature_min FLOAT,
-        temperature_max FLOAT,
-        windchill FLOAT
+        temperature FLOAT,
+        temperature_trend TEXT,
+        humidity FLOAT,
+        windspeed TEXT,
+        winddirection TEXT
     );
     '''
     conn = get_db_conn()
@@ -108,12 +129,13 @@ def insert_to_pg():
     data = json.load(open(URL_DETAIL_FILE, 'r'))
     for url, row in zip(urls, data):
         q = '''
-        INSERT INTO events (url, title, date, venue, category, location, latitude, longitude, weather_condition, temperature_min, temperature_max, windchill)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        INSERT INTO events (url, title, date, venue, category, location, latitude, longitude, 
+        weather_condition, temperature, temperature_trend, humidity, windspeed, winddirection)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         ON CONFLICT (url) DO NOTHING;
         '''
         cur.execute(q, (url, row['title'], row['date'], row['venue'], row['category'], row['location'], row['latitude'], row['longitude'],
-                        row.get('condition'), row.get('temperature_min'), row.get('temperature_max'), row.get('windchill')))
+                        row.get('condition'), row.get('temperature'), row.get('temperature_trend'), row.get('humidity'), row.get('windspeed'), row.get('winddirection')))
 
 
 if __name__ == '__main__':
