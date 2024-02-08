@@ -23,11 +23,11 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Test with pytest
       env:
-        DB_USER: ${{ secrets.DB_USER }}
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        DB_HOST: ${{ secrets.DB_HOST }}
-        DB_PORT: ${{ secrets.DB_PORT }}
-        DB_NAME: ${{ secrets.DB_NAME }}
+        DB_USER: haokunfeng
+        DB_PASSWORD: Lipuyin@2000
+        DB_HOST: gixtechin510.postgres.database.azure.com
+        DB_PORT: 5432
+        DB_NAME: postgres
       run: |
         echo "DB_HOST: $DB_HOST"
         python scraper.py
