@@ -1,0 +1,20 @@
+name: Test PostgreSQL Connection
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test_postgres_connection:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up PostgreSQL client
+      run: |
+        sudo apt-get install postgresql-client
+        export PGPASSWORD=${{ secrets.DB_PASSWORD }}
+        psql -h ${{ secrets.DB_HOST }} -U ${{ secrets.DB_USER }} -d ${{ secrets.DB_NAME }} -p ${{ secrets.DB_PORT }} -c 'SELECT version();'
