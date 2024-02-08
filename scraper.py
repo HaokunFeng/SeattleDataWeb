@@ -30,6 +30,8 @@ def get_weather_data(latitude, longitude):
     response = requests.get(url)
     data = response.json()
 
+    print("Complete API response:", json.dumps(data, indent=2))
+
     properties = data.get('properties', {})
     periods = properties.get('periods', [])
 
@@ -54,6 +56,7 @@ def get_weather_data(latitude, longitude):
         'windspeed': first_period.get('windSpeed'),
         'winddirection': first_period.get('windDirection'),
     }
+
 
 
 
