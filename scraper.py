@@ -60,7 +60,7 @@ def get_weather_data(latitude, longitude):
             'winddirection': None,
         }
 
-    # Extracting the relevant data from the first period (assumption: you want the current or next forecast)
+    # Extracting the relevant data from the first period
     first_period = periods[0]
 
     return {

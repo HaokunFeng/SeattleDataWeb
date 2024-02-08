@@ -13,8 +13,6 @@ db_port = os.getenv('DB_PORT')
 db_name = os.getenv('DB_NAME')
 conn_str = f'postgresql://{db_user}:{db_pw}@{db_host}:{db_port}/{db_name}'
 
-#conn_str = "postgresql://haokunfeng:Lipuyin%402000@gixtechin510.postgres.database.azure.com:5432/postgres"
-
 
 def get_db_conn():
     conn = psycopg2.connect(conn_str)

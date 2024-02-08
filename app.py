@@ -6,11 +6,9 @@ import folium
 from streamlit_folium import st_folium
 from db import conn_str
 
-# Read events data from the PostgreSQL database
 query = "SELECT * FROM events"
 df = sqlio.read_sql_query(query, conn_str)
 
-# Display title
 st.title("Seattle Events Dashboard")
 
 # Chart 1: Most common event categories
@@ -42,7 +40,6 @@ for index, event in df.iterrows():
     folium.Marker([event['latitude'], event['longitude']], popup=event['venue']).add_to(m)
 st_folium(m, width=1200, height=600)
 
-# Controls
 st.sidebar.header("Data Filters")
 
 # Dropdown to filter category
