@@ -66,4 +66,4 @@ jobs:
         with:
           app-name: 'seattledata'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_9878A021EF164579A86E93E5AF72B364 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CD335DE4A9CA429096F89019934417DA }}
