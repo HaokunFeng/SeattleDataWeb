@@ -30,7 +30,7 @@ def get_weather_data(latitude, longitude):
     response = requests.get(url)
     data = response.json()
 
-    print("Complete API response:", json.dumps(data, indent=2))
+    #print("Complete API response:", json.dumps(data, indent=2))
 
     properties = data.get('properties', {})
     forecast_url = properties.get('forecast')
