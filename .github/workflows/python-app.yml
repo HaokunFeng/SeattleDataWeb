@@ -29,4 +29,5 @@ jobs:
         DB_PORT: ${{ secrets.DB_PORT }}
         DB_NAME: ${{ secrets.DB_NAME }}
       run: |
+        echo "DB_HOST: $DB_HOST"
         python scraper.py
